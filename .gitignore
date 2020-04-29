@@ -1,0 +1,9 @@
+.gopath~
+bin
+vendor
+pkg
+.idea
+*.iml
+build
+terraform.tfstate*
+.terraform
