@@ -1,10 +1,10 @@
 package router
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gorillamux"
-	"github.com/cupakob/covid19trends-rest-api/domain"
+	"github.com/cupakob/covid19trends-rest-api/handler"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -16,17 +16,19 @@ type Router interface {
 
 // Route is a struct that implements the interface Router
 type Route struct {
-	MuxRouter                 *mux.Router
-	gorillaAdapter            *gorillamux.GorillaMuxAdapter
+	MuxRouter      *mux.Router
+	gorillaAdapter *gorillamux.GorillaMuxAdapter
+	Handler        handler.Handler
 }
 
 // NewRouter is a constructor to create a Router object
-func NewRouter() Router {
+func NewRouter(handler handler.Handler) Router {
 	muxRouter := mux.NewRouter()
 	gorillaAdapter := gorillamux.New(muxRouter)
 	route := &Route{
 		MuxRouter:      muxRouter,
 		gorillaAdapter: gorillaAdapter,
+		Handler:        handler,
 	}
 	route.MuxRouter.HandleFunc("/{countrycode}", route.FetchDataForGivenCountry).Methods("GET")
 	return route
@@ -34,19 +36,14 @@ func NewRouter() Router {
 
 func (r *Route) FetchDataForGivenCountry(writer http.ResponseWriter, request *http.Request) {
 	pathParameters := mux.Vars(request)
-	inputCountryCode, err := findPathParameter(pathParameters, "countrycode")
+	output, statusCode, err := r.Handler.Process(pathParameters)
 	if err != nil {
-		buildResponse(writer, http.StatusBadRequest, fmt.Sprintf("missing path parameter. error: %v", err))
+		buildResponse(writer, statusCode, err.Error())
 		return
 	}
 
-	countryCode := domain.CountryCode(*inputCountryCode)
-	valid := countryCode.Validate()
-	if !valid {
-		buildResponse(writer, http.StatusBadRequest, fmt.Sprintf("given countrycode '%v' is not valid", countryCode))
-		return
-	}
-	buildResponse(writer, http.StatusOK, fmt.Sprintf("Hello Countrycode '%v'!", *inputCountryCode))
+	outputJSON, _ := json.Marshal(output)
+	buildResponse(writer, http.StatusOK, string(outputJSON))
 	return
 }
 
@@ -54,13 +51,6 @@ func (r *Route) InvokeRequest(request events.APIGatewayProxyRequest) (events.API
 	return r.gorillaAdapter.Proxy(request)
 }
 
-func findPathParameter(givenMap map[string]string, key string) (*string, error) {
-	value, ok := givenMap[key]
-	if !ok {
-		return nil, fmt.Errorf("failed to find key '%v' in path parameters", key)
-	}
-	return &value, nil
-}
 
 func buildResponse(writer http.ResponseWriter, code int, payload string) {
 	writer.Header().Add("Content-Type", "application/json")
