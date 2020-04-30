@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gorillamux"
+	"github.com/cupakob/covid19trends-rest-api/domain"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -17,7 +18,6 @@ type Router interface {
 type Route struct {
 	MuxRouter                 *mux.Router
 	gorillaAdapter            *gorillamux.GorillaMuxAdapter
-	BucketnameImageUploadTemp string
 }
 
 // NewRouter is a constructor to create a Router object
@@ -34,13 +34,19 @@ func NewRouter() Router {
 
 func (r *Route) FetchDataForGivenCountry(writer http.ResponseWriter, request *http.Request) {
 	pathParameters := mux.Vars(request)
-	countryCode, err := findPathParameter(pathParameters, "countrycode")
+	inputCountryCode, err := findPathParameter(pathParameters, "countrycode")
 	if err != nil {
 		buildResponse(writer, http.StatusBadRequest, fmt.Sprintf("missing path parameter. error: %v", err))
 		return
 	}
 
-	buildResponse(writer, http.StatusOK, fmt.Sprintf("Hello Countrycode '%v'!", *countryCode))
+	countryCode := domain.CountryCode(*inputCountryCode)
+	valid := countryCode.Validate()
+	if !valid {
+		buildResponse(writer, http.StatusBadRequest, fmt.Sprintf("given countrycode '%v' is not valid", countryCode))
+		return
+	}
+	buildResponse(writer, http.StatusOK, fmt.Sprintf("Hello Countrycode '%v'!", *inputCountryCode))
 	return
 }
 
