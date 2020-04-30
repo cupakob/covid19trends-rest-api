@@ -1,5 +1,5 @@
 # covid19trends-rest-api
-REST API for [covid19trends.de][1]
+REST API for [covid19-trends.de][1]
 
 ## Endpoints
 There is only one endpoint currently
@@ -19,4 +19,4 @@ The country code must be 2 chars long and uppercase, e.g.
 * If the country code is invalid, the response status is 400
 * If okay - 200 :)
 
-[1]: https://covid19trends.de
+[1]: https://covid19-trends.de
