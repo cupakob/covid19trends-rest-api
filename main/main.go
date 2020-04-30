@@ -5,17 +5,24 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/cupakob/covid19trends-rest-api/data"
 	requestHandler "github.com/cupakob/covid19trends-rest-api/handler"
+	"github.com/cupakob/covid19trends-rest-api/resources"
 	"github.com/cupakob/covid19trends-rest-api/router"
 	"log"
 	"net/http"
+	"os"
 )
 
 var fetcher data.Fetcher
 var handler requestHandler.Handler
+var errorLogger = log.New(os.Stderr, "ERROR ", log.Llongfile)
 
 func init() {
 	httpClient := &http.Client{}
-	fetcher = data.NewFetcher(httpClient, "https://api.covid19api.com/summary")
+	resources, err := resources.NewResources()
+	if err != nil {
+			errorLogger.Fatalf("failed to initialize awsResources. %v", err)
+	}
+	fetcher = data.NewFetcher(httpClient, resources.URL)
 	handler = requestHandler.NewHandler(fetcher)
 }
 
