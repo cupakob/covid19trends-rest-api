@@ -23,13 +23,13 @@ func NewHandler(fetcher data.Fetcher) Handler {
 func (h *Handle) Process(requestParams map[string]string) (*domain.Output, int, error) {
 	inputCountryCode, err := findPathParameter(requestParams, "countrycode")
 	if err != nil {
-		return nil, http.StatusBadRequest, fmt.Errorf("missing path parameter countrycode. error: %v", err)
+		return nil, http.StatusBadRequest, fmt.Errorf("missing path parameter countrycode")
 	}
 
 	countryCode := domain.CountryCode(*inputCountryCode)
 	valid := countryCode.Validate()
 	if !valid {
-		return nil, http.StatusBadRequest, fmt.Errorf("given countrycode '%v' is not valid. error: %v", countryCode, err)
+		return nil, http.StatusBadRequest, fmt.Errorf("given countrycode '%v' is not valid", countryCode)
 	}
 
 	responseJSON, err := h.Fetcher.FetchAndPrepareData()
@@ -39,20 +39,24 @@ func (h *Handle) Process(requestParams map[string]string) (*domain.Output, int, 
 
 	for _, country := range responseJSON.Countries {
 		if country.CountryCode == string(countryCode) {
-			time, _ := time.Parse(time.RFC3339, country.Date)
-			return &domain.Output{
-				Cases:     country.TotalConfirmed,
-				CasesNew:  country.NewConfirmed,
-				Deaths:    country.TotalDeaths,
-				DeathsNew: country.NewDeaths,
-				Timestamp: time.Unix(),
-				Date:      country.Date,
-				DaysPast:  0,
-			}, http.StatusOK, nil
+			return h.createOutput(country), http.StatusOK, nil
 		}
 	}
 
 	return nil, http.StatusNotFound, fmt.Errorf("no country found for the given countrycode '%v'", countryCode)
+}
+
+func (h *Handle) createOutput(country domain.Country) *domain.Output {
+	time, _ := time.Parse(time.RFC3339, country.Date)
+	return &domain.Output{
+		Cases:     country.TotalConfirmed,
+		CasesNew:  country.NewConfirmed,
+		Deaths:    country.TotalDeaths,
+		DeathsNew: country.NewDeaths,
+		Timestamp: time.Unix(),
+		Date:      country.Date,
+		DaysPast:  0,
+	}
 }
 
 func findPathParameter(givenMap map[string]string, key string) (*string, error) {
