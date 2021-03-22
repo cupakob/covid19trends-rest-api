@@ -7,3 +7,6 @@ pkg
 build
 terraform.tfstate*
 .terraform
+coverage.out
+sonar-project.properties
+update-sonarqube.sh
