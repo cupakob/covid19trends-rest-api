@@ -19,4 +19,9 @@ The country code must be 2 chars long and uppercase, e.g.
 * If the country code is invalid, the response status is 400
 * If okay - 200 :)
 
+## SonarCloud
+
+You can find some stats for the project [here][2]
+
 [1]: https://covid19-trends.de
+[2]: https://sonarcloud.io/project/overview?id=cupakob_covid19trends-rest-api
