@@ -2,12 +2,12 @@ package data
 
 import "net/http"
 
-// HTTPClient is a simple interface for our HTTP Client
+// CovidHTTPClient is a simple interface for our HTTP Client
 type CovidHTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// Client is implementation of DDFHTTPClient
+// CovidClient is implementation of DDFHTTPClient
 type CovidClient struct {
 	covidclient *http.Client
 }

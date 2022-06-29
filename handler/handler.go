@@ -48,13 +48,13 @@ func (h *Handle) Process(requestParams map[string]string) (*domain.Output, int, 
 }
 
 func (h *Handle) createOutput(country domain.Country) *domain.Output {
-	time, _ := time.Parse(time.RFC3339, country.Date)
+	t, _ := time.Parse(time.RFC3339, country.Date)
 	return &domain.Output{
 		Cases:     country.TotalConfirmed,
 		CasesNew:  country.NewConfirmed,
 		Deaths:    country.TotalDeaths,
 		DeathsNew: country.NewDeaths,
-		Timestamp: time.Unix(),
+		Timestamp: t.Unix(),
 		Date:      country.Date,
 		DaysPast:  0,
 	}
