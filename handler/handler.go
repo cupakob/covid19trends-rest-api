@@ -2,10 +2,11 @@ package handler
 
 import (
 	"fmt"
-	"github.com/cupakob/covid19trends-rest-api/data"
-	"github.com/cupakob/covid19trends-rest-api/domain"
 	"net/http"
 	"time"
+
+	"github.com/cupakob/covid19trends-rest-api/data"
+	"github.com/cupakob/covid19trends-rest-api/domain"
 )
 
 type Handler interface {

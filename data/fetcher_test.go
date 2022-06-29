@@ -11,11 +11,7 @@ import (
 )
 
 func TestNewFetcher(t *testing.T) {
-
-}
-
-func TestNewFetcher1(t *testing.T) {
-	t.Run("happy path", func(t *testing.T) {
+	t.Run("should create fetcher successfully", func(t *testing.T) {
 		// given
 		mockHTTPClient := &MockHTTPClient{}
 
@@ -27,7 +23,7 @@ func TestNewFetcher1(t *testing.T) {
 	})
 }
 
-func TestFetch_Import(t *testing.T) {
+func TestFetchImport(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 	    // given
 		fileContent, _ := ioutil.ReadFile("testdata/validResponse.json")
@@ -92,5 +88,4 @@ func TestFetch_Import(t *testing.T) {
 		assert.Error(t, err)
 		assert.Nil(t, output)
 	})
-
 }
