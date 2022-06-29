@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCountryCode_Validate(t *testing.T) {
+func TestCountryCodeValidate(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 	    // given
 	    countryCode := domain.CountryCode("DE")

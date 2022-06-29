@@ -2,11 +2,13 @@ package handler_test
 
 import (
 	"errors"
-	"github.com/cupakob/covid19trends-rest-api/domain"
-	"github.com/cupakob/covid19trends-rest-api/handler"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/cupakob/covid19trends-rest-api/domain"
+	"github.com/cupakob/covid19trends-rest-api/handler"
 )
 
 func TestNewHandler(t *testing.T) {
@@ -22,7 +24,7 @@ func TestNewHandler(t *testing.T) {
 	})
 }
 
-func TestHandle_Process(t *testing.T) {
+func TestHandleProcess(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 	    // given
 		mockFetcher := &MockFetcher{
