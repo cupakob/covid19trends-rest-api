@@ -7,7 +7,6 @@ require (
 	github.com/awslabs/aws-lambda-go-api-proxy v0.6.0
 	github.com/gorilla/mux v1.7.4
 	github.com/stretchr/testify v1.5.1
-	golang.org/x/net v0.0.0-20200202094626-16171245cfb2 // indirect
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect

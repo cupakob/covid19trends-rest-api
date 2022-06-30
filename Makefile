@@ -1,3 +1,6 @@
+clean:
+	rm -rf build
+
 test:
 	go test -cover ./...
 
