@@ -11,6 +11,10 @@ jobs:
         run: make test
         shell: bash
 
+      - name: test-coverage
+        run:   ${{ github.workspace }}/update-sonarqube.sh
+        shell: bash
+
       - name: build
         run: make build
         shell: bash
