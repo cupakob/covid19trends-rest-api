@@ -1,4 +1,4 @@
-name: build
+name: run test and build
 on: [push]
 jobs:
   build:
@@ -6,7 +6,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-
 
       - name: test
         run: make test
