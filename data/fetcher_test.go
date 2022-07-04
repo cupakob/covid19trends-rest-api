@@ -3,6 +3,7 @@ package data_test
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/cupakob/covid19trends-rest-api/data"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -13,10 +14,11 @@ import (
 func TestNewFetcher(t *testing.T) {
 	t.Run("should create fetcher successfully", func(t *testing.T) {
 		// given
-		mockHTTPClient := &MockHTTPClient{}
+		mockHTTPClient := &MockCovidHTTPClient{}
+		requestBuilder := &MockRequestBuilder{}
 
 		// when
-		fetcher := data.NewFetcher(mockHTTPClient, "url")
+		fetcher := data.NewFetcher(mockHTTPClient, requestBuilder)
 
 		// then
 		assert.NotNil(t, fetcher)
@@ -27,7 +29,7 @@ func TestFetchImport(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 	    // given
 		fileContent, _ := ioutil.ReadFile("testdata/validResponse.json")
-		mockHTTPClient := &MockHTTPClient{
+		mockHTTPClient := &MockCovidHTTPClient{
 			callDo: func(req *http.Request) (*http.Response, error) {
 				reader := bytes.NewReader(fileContent)
 				nopCloser := ioutil.NopCloser(reader)
@@ -37,8 +39,14 @@ func TestFetchImport(t *testing.T) {
 				}, nil
 			},
 		}
+		mockRequestBuilder := &MockRequestBuilder{
+			callBuildRequest: func() (*http.Request, error) {
+				return nil, nil
+			},
+		}
 	    fetcher := data.Fetch{
-	    	HTTPClient: mockHTTPClient,
+	    	HTTPClient:     mockHTTPClient,
+	    	RequestBuilder: mockRequestBuilder,
 		}
 
 	    // when
@@ -47,20 +55,29 @@ func TestFetchImport(t *testing.T) {
 		// then
 		assert.NoError(t, err)
 		assert.NotNil(t, output)
+		assert.Equal(t, 1, mockHTTPClient.countDo)
+		assert.Equal(t, 1, mockRequestBuilder.countBuildRequest)
 	})
 
 	t.Run("sending request returns wrong status", func(t *testing.T) {
 		// given
-		mockHTTPClient := &MockHTTPClient{
+		mockHTTPClient := &MockCovidHTTPClient{
 			callDo: func(req *http.Request) (*http.Response, error) {
 				return &http.Response{
 					StatusCode: 500,
 				}, nil
 			},
 		}
-		fetcher := data.Fetch{
-			HTTPClient: mockHTTPClient,
+		mockRequestBuilder := &MockRequestBuilder{
+			callBuildRequest: func() (*http.Request, error) {
+				return nil, nil
+			},
 		}
+		fetcher := data.Fetch{
+			HTTPClient:     mockHTTPClient,
+			RequestBuilder: mockRequestBuilder,
+		}
+
 
 		// when
 		output, err := fetcher.FetchAndPrepareData()
@@ -68,18 +85,27 @@ func TestFetchImport(t *testing.T) {
 		// then
 		assert.Error(t, err)
 		assert.Nil(t, output)
+		assert.Equal(t, 1, mockHTTPClient.countDo)
+		assert.Equal(t, 1, mockRequestBuilder.countBuildRequest)
 	})
 
 	t.Run("sending request failed", func(t *testing.T) {
 		// given
-		mockHTTPClient := &MockHTTPClient{
+		mockHTTPClient := &MockCovidHTTPClient{
 			callDo: func(req *http.Request) (*http.Response, error) {
 				return &http.Response{}, errors.New("an error")
 			},
 		}
-		fetcher := data.Fetch{
-			HTTPClient: mockHTTPClient,
+		mockRequestBuilder := &MockRequestBuilder{
+			callBuildRequest: func() (*http.Request, error) {
+				return nil, nil
+			},
 		}
+		fetcher := data.Fetch{
+			HTTPClient:     mockHTTPClient,
+			RequestBuilder: mockRequestBuilder,
+		}
+
 
 		// when
 		output, err := fetcher.FetchAndPrepareData()
@@ -87,5 +113,31 @@ func TestFetchImport(t *testing.T) {
 		// then
 		assert.Error(t, err)
 		assert.Nil(t, output)
+		assert.Equal(t, 1, mockHTTPClient.countDo)
+		assert.Equal(t, 1, mockRequestBuilder.countBuildRequest)
+	})
+
+	t.Run("should return error when building request fails", func(t *testing.T) {
+		// given
+		mockHTTPClient := &MockCovidHTTPClient{}
+		mockRequestBuilder := &MockRequestBuilder{
+			callBuildRequest: func() (*http.Request, error) {
+				return nil, fmt.Errorf("failed to build request")
+			},
+		}
+		fetcher := data.Fetch{
+			HTTPClient:     mockHTTPClient,
+			RequestBuilder: mockRequestBuilder,
+		}
+
+
+		// when
+		output, err := fetcher.FetchAndPrepareData()
+
+		// then
+		assert.Error(t, err)
+		assert.Nil(t, output)
+		assert.Equal(t, 1, mockRequestBuilder.countBuildRequest)
+		assert.Equal(t, 0, mockHTTPClient.countDo)
 	})
 }
