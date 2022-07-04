@@ -7,7 +7,7 @@ type CovidHTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// CovidClient is implementation of DDFHTTPClient
+// CovidClient is implementation of CovidHTTPClient
 type CovidClient struct {
 	covidclient *http.Client
 }

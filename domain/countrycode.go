@@ -12,7 +12,7 @@ const (
 
 func (cc CountryCode) Validate() bool {
 	match, err := regexp.MatchString(countryCodePattern, string(cc))
-	if err != nil {
+	if !match || err != nil {
 		return false
 	}
 	return match
