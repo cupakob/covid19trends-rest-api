@@ -1,7 +1,7 @@
 name: run test and build
 on: [push]
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -10,6 +10,15 @@ jobs:
       - name: test
         run: make test
         shell: bash
+
+      - name: sonarcloud analysis
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -X
 
       - name: build
         run: make build
