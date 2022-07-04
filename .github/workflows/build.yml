@@ -18,7 +18,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -X
+            -Dcoverprofile=coverage.out
+#            -X
 
       - name: build
         run: make build
