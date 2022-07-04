@@ -13,20 +13,19 @@ type Fetcher interface {
 
 type Fetch struct {
 	HTTPClient CovidHTTPClient
-	URL string
+	RequestBuilder Builder
 }
 
-func NewFetcher(httpClient CovidHTTPClient, url string) Fetcher {
+func NewFetcher(httpClient CovidHTTPClient, requestBuilder Builder) Fetcher {
 	return &Fetch{
 		HTTPClient: httpClient,
-		URL: url,
+		RequestBuilder: requestBuilder,
 	}
 }
 
 func (f *Fetch) FetchAndPrepareData() (*domain.Response, error) {
-	var request *http.Request
-	var err error
-	if request, err = http.NewRequest(http.MethodGet, f.URL, nil); err != nil {
+	request, err := f.RequestBuilder.BuildRequest()
+	if err != nil {
 		return nil, err
 	}
 	var response *http.Response

@@ -12,6 +12,10 @@ type CovidClient struct {
 	covidclient *http.Client
 }
 
+func NewCovidClient(covidclient *http.Client) CovidHTTPClient {
+	return &CovidClient{covidclient: covidclient}
+}
+
 // Do sends the request
 func (c *CovidClient) Do(req *http.Request) (*http.Response, error) {
 	return c.covidclient.Do(req)

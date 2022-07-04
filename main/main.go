@@ -14,18 +14,32 @@ import (
 	"github.com/cupakob/covid19trends-rest-api/router"
 )
 
-var fetcher data.Fetcher
 var handler requestHandler.Handler
 var errorLogger = log.New(os.Stderr, "ERROR ", log.Llongfile)
 
 func init() {
-	httpClient := &http.Client{}
 	resources, err := r.NewResources()
 	if err != nil {
 		errorLogger.Fatalf("failed to initialize awsResources. %v", err)
 	}
-	fetcher = data.NewFetcher(httpClient, resources.URL)
-	handler = requestHandler.NewHandler(fetcher)
+	handler = createHandler(resources)
+}
+
+func createHandler(resources *r.Resources) requestHandler.Handler {
+	fetcher := createFetcher(resources)
+	return requestHandler.NewHandler(fetcher)
+}
+
+func createFetcher(resources *r.Resources) data.Fetcher {
+	covidClient := createCovidClient()
+	requestBuilder := data.NewRequestBuilder("GET", resources.URL)
+	return data.NewFetcher(covidClient, requestBuilder)
+}
+
+func createCovidClient() data.CovidHTTPClient {
+	httpClient := &http.Client{}
+	covidClient := data.NewCovidClient(httpClient)
+	return covidClient
 }
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
