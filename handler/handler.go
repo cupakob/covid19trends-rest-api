@@ -10,7 +10,7 @@ import (
 )
 
 type Handler interface {
-	Process(map[string]string) (*domain.Output, int, error)
+	Process(requestParams map[string]string) (*domain.Output, int, error)
 }
 
 type Handle struct {
