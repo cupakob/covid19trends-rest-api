@@ -1,10 +1,11 @@
 package data
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/cupakob/covid19trends-rest-api/domain"
+	"encoding/json"
 	"net/http"
+
+	"github.com/cupakob/covid19trends-rest-api/domain"
 )
 
 type Fetcher interface {

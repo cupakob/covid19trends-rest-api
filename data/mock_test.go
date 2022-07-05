@@ -1,8 +1,9 @@
 package data_test
 
 import (
-	"github.com/cupakob/covid19trends-rest-api/data"
 	"net/http"
+
+	"github.com/cupakob/covid19trends-rest-api/data"
 )
 
 type MockCovidHTTPClient struct {
