@@ -1,9 +1,11 @@
 package data_test
 
 import (
-	"github.com/cupakob/covid19trends-rest-api/data"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/cupakob/covid19trends-rest-api/data"
 )
 
 func TestRequestBuilder_BuildRequest(t *testing.T) {

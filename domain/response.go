@@ -7,23 +7,23 @@ type Response struct {
 }
 
 type Global struct {
-	NewConfirmed int
+	NewConfirmed   int
 	TotalConfirmed int
-	NewDeaths int
-	TotalDeaths int
-	NewRecovered int
+	NewDeaths      int
+	TotalDeaths    int
+	NewRecovered   int
 	TotalRecovered int
 }
 
 type Country struct {
-	Country string
-	CountryCode string
-	Slug string
-	NewConfirmed int
+	Country        string
+	CountryCode    string
+	Slug           string
+	NewConfirmed   int
 	TotalConfirmed int
-	NewDeaths int
-	TotalDeaths int
-	NewRecovered int
+	NewDeaths      int
+	TotalDeaths    int
+	NewRecovered   int
 	TotalRecovered int
-	Date string
+	Date           string
 }

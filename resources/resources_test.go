@@ -1,10 +1,12 @@
 package resources_test
 
 import (
-	"github.com/cupakob/covid19trends-rest-api/resources"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/cupakob/covid19trends-rest-api/resources"
 )
 
 func TestNewResources(t *testing.T) {

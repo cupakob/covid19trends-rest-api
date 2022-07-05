@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/cupakob/covid19trends-rest-api/data"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/cupakob/covid19trends-rest-api/data"
 )
 
 func TestNewFetcher(t *testing.T) {
@@ -27,7 +29,7 @@ func TestNewFetcher(t *testing.T) {
 
 func TestFetchImport(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
-	    // given
+		// given
 		fileContent, _ := ioutil.ReadFile("testdata/validResponse.json")
 		mockHTTPClient := &MockCovidHTTPClient{
 			callDo: func(req *http.Request) (*http.Response, error) {
@@ -44,12 +46,12 @@ func TestFetchImport(t *testing.T) {
 				return nil, nil
 			},
 		}
-	    fetcher := data.Fetch{
-	    	HTTPClient:     mockHTTPClient,
-	    	RequestBuilder: mockRequestBuilder,
+		fetcher := data.Fetch{
+			HTTPClient:     mockHTTPClient,
+			RequestBuilder: mockRequestBuilder,
 		}
 
-	    // when
+		// when
 		output, err := fetcher.FetchAndPrepareData()
 
 		// then
@@ -78,7 +80,6 @@ func TestFetchImport(t *testing.T) {
 			RequestBuilder: mockRequestBuilder,
 		}
 
-
 		// when
 		output, err := fetcher.FetchAndPrepareData()
 
@@ -106,7 +107,6 @@ func TestFetchImport(t *testing.T) {
 			RequestBuilder: mockRequestBuilder,
 		}
 
-
 		// when
 		output, err := fetcher.FetchAndPrepareData()
 
@@ -129,7 +129,6 @@ func TestFetchImport(t *testing.T) {
 			HTTPClient:     mockHTTPClient,
 			RequestBuilder: mockRequestBuilder,
 		}
-
 
 		// when
 		output, err := fetcher.FetchAndPrepareData()

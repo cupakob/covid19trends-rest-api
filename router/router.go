@@ -2,11 +2,13 @@ package router
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gorillamux"
-	"github.com/cupakob/covid19trends-rest-api/handler"
 	"github.com/gorilla/mux"
-	"net/http"
+
+	"github.com/cupakob/covid19trends-rest-api/handler"
 )
 
 // Router is an interface that provides methods to handle incoming requests
@@ -50,7 +52,6 @@ func (r *Route) FetchDataForGivenCountry(writer http.ResponseWriter, request *ht
 func (r *Route) InvokeRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	return r.gorillaAdapter.Proxy(request)
 }
-
 
 func buildResponse(writer http.ResponseWriter, code int, payload string) {
 	writer.Header().Add("Content-Type", "application/json")
