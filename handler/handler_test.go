@@ -26,13 +26,13 @@ func TestNewHandler(t *testing.T) {
 
 func TestHandleProcess(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
-	    // given
+		// given
 		mockFetcher := &MockFetcher{
 			callFetchAndPrepareData: func() (*domain.Response, error) {
 				return &domain.Response{
 					Countries: []domain.Country{
 						{
-							CountryCode:    "DE",
+							CountryCode: "DE",
 						},
 					},
 				}, nil
@@ -61,7 +61,7 @@ func TestHandleProcess(t *testing.T) {
 				return &domain.Response{
 					Countries: []domain.Country{
 						{
-							CountryCode:    "AA",
+							CountryCode: "AA",
 						},
 					},
 				}, nil
@@ -142,4 +142,3 @@ func TestHandleProcess(t *testing.T) {
 		assert.Equal(t, 1, mockFetcher.countFetchAndPrepareData)
 	})
 }
-

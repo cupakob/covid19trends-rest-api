@@ -11,11 +11,11 @@ import (
 
 func TestNewResources(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
-	    // given
+		// given
 		givenURL := "sourceURL"
 		_ = os.Setenv("source_url", givenURL)
 
-	    // when
+		// when
 		r, err := resources.NewResources()
 
 		// then

@@ -10,7 +10,7 @@ import (
 
 func TestRequestBuilder_BuildRequest(t *testing.T) {
 	t.Run("should create request successful", func(t *testing.T) {
-	    // given
+		// given
 		builder := data.NewRequestBuilder("GET", "http://localhost")
 
 		// when

@@ -8,7 +8,7 @@ import (
 type MockFetcher struct {
 	data.Fetcher
 	countFetchAndPrepareData int
-	callFetchAndPrepareData func() (*domain.Response, error)
+	callFetchAndPrepareData  func() (*domain.Response, error)
 }
 
 func (m *MockFetcher) FetchAndPrepareData() (*domain.Response, error) {
