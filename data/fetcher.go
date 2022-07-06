@@ -1,8 +1,8 @@
 package data
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/cupakob/covid19trends-rest-api/domain"
@@ -13,13 +13,13 @@ type Fetcher interface {
 }
 
 type Fetch struct {
-	HTTPClient CovidHTTPClient
+	HTTPClient     CovidHTTPClient
 	RequestBuilder Builder
 }
 
 func NewFetcher(httpClient CovidHTTPClient, requestBuilder Builder) Fetcher {
 	return &Fetch{
-		HTTPClient: httpClient,
+		HTTPClient:     httpClient,
 		RequestBuilder: requestBuilder,
 	}
 }

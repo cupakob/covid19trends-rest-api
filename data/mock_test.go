@@ -20,7 +20,7 @@ func (m *MockCovidHTTPClient) Do(req *http.Request) (*http.Response, error) {
 type MockRequestBuilder struct {
 	data.Builder
 	countBuildRequest int
-	callBuildRequest func() (*http.Request, error)
+	callBuildRequest  func() (*http.Request, error)
 }
 
 func (m *MockRequestBuilder) BuildRequest() (*http.Request, error) {

@@ -25,4 +25,3 @@ func findEnvVar(key string) (string, error) {
 	}
 	return value, nil
 }
-
