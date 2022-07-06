@@ -5,9 +5,9 @@ go 1.17
 require (
 	github.com/aws/aws-lambda-go v1.16.0
 	github.com/awslabs/aws-lambda-go-api-proxy v0.6.0
-	github.com/gorilla/mux v1.7.4
-	github.com/stretchr/testify v1.5.1
 	github.com/davecgh/go-spew v1.1.0 // indirect
+	github.com/gorilla/mux v1.7.4
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.5.1
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
