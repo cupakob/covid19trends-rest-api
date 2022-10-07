@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/awslabs/aws-lambda-go-api-proxy/core"
 
 	"github.com/cupakob/covid19trends-rest-api/data"
 	requestHandler "github.com/cupakob/covid19trends-rest-api/handler"
