@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/awslabs/aws-lambda-go-api-proxy/core"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
 	"github.com/cupakob/covid19trends-rest-api/data"
@@ -42,7 +42,7 @@ func createCovidClient() data.CovidHTTPClient {
 	return covidClient
 }
 
-func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func Handler(request core.SwitchableAPIGatewayRequest) (*core.SwitchableAPIGatewayResponse, error) {
 	return router.NewRouter(handler).InvokeRequest(request)
 }
 

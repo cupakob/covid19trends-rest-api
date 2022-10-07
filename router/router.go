@@ -2,9 +2,9 @@ package router
 
 import (
 	"encoding/json"
+	"github.com/awslabs/aws-lambda-go-api-proxy/core"
 	"net/http"
 
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/awslabs/aws-lambda-go-api-proxy/gorillamux"
 	"github.com/gorilla/mux"
 
@@ -13,7 +13,7 @@ import (
 
 // Router is an interface that provides methods to handle incoming requests
 type Router interface {
-	InvokeRequest(events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)
+	InvokeRequest(core.SwitchableAPIGatewayRequest) (*core.SwitchableAPIGatewayResponse, error)
 }
 
 // Route is a struct that implements the interface Router
@@ -49,7 +49,7 @@ func (r *Route) FetchDataForGivenCountry(writer http.ResponseWriter, request *ht
 	return
 }
 
-func (r *Route) InvokeRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func (r *Route) InvokeRequest(request core.SwitchableAPIGatewayRequest) (*core.SwitchableAPIGatewayResponse, error) {
 	return r.gorillaAdapter.Proxy(request)
 }
 
