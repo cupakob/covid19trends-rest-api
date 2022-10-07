@@ -8,13 +8,13 @@ build: clean
 	cd main && GOOS=linux GOARCH=amd64 go build -v -ldflags '-d -s -w' -a -tags netgo -installsuffix netgo -o ../build/bin/app .
 
 init:
-	terraform init infra
+	terraform -chdir=infra init
 
 plan:
-	terraform plan infra
+	terraform -chdir=infra plan
 
 apply:
-	terraform apply --auto-approve infra
+	terraform -chdir=infra apply --auto-approve
 
 destroy:
-	terraform destroy --auto-approve infra
+	terraform -chdir=infra destroy --auto-approve
