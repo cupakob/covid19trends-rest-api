@@ -6,5 +6,5 @@ pkg
 *.iml
 build
 terraform.tfstate*
-.terraform
+.terraform*
 coverage.out
