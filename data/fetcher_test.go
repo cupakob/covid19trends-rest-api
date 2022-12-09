@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -30,11 +31,11 @@ func TestNewFetcher(t *testing.T) {
 func TestFetchImport(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 		// given
-		fileContent, _ := ioutil.ReadFile("testdata/validResponse.json")
+		fileContent, _ := os.ReadFile("testdata/validResponse.json")
 		mockHTTPClient := &MockCovidHTTPClient{
 			callDo: func(req *http.Request) (*http.Response, error) {
 				reader := bytes.NewReader(fileContent)
-				nopCloser := ioutil.NopCloser(reader)
+				nopCloser := io.NopCloser(reader)
 				return &http.Response{
 					StatusCode: 200,
 					Body:       nopCloser,
