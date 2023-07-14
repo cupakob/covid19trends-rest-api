@@ -1,9 +1,9 @@
 module github.com/cupakob/covid19trends-rest-api
 
-go 1.18
+go 1.20
 
 require (
-	github.com/aws/aws-lambda-go v1.37.0
+	github.com/aws/aws-lambda-go v1.41.0
 	github.com/awslabs/aws-lambda-go-api-proxy v0.14.0
 	github.com/gorilla/mux v1.8.0
 	github.com/stretchr/testify v1.8.0
