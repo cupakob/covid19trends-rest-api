@@ -1,11 +1,14 @@
 name: run test and build
 on: [push]
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  checkout:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: test
         run: make test
