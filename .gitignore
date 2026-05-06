@@ -8,3 +8,4 @@ build
 terraform.tfstate*
 .terraform*
 coverage.out
+.claude
